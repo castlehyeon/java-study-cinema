@@ -2,7 +2,7 @@ package kr.or.kosa.homework;
 
 import java.util.Scanner;
 
-public class CinemaService {
+public class CinemaUtils {
  
 	//좌석 초기화 함수
   	int[][] initSeat(int[][] seat){
@@ -51,8 +51,6 @@ public class CinemaService {
         if (seat[selectseat[0]][selectseat[1]] == 0) {
         	seat[selectseat[0]][selectseat[1]] = reservationNum;
             reservateYn = true;
-        }else {
-//        	testYn("다시 선택하시겠습니까?",)
         }
         
         message = reservateYn ? "고객님이 예매하신 예매번호는 [" + reservationNum + "] 입니다\n":"고객님~ 예약이 어려우세요~\n";
@@ -131,10 +129,6 @@ public class CinemaService {
 
         return serialNum;
     }
-	
-	void testYn(String questionStr) {
-		
-	}
 	
 	//선택된 자리가 예약된 자리인지 확인하기 함수(비어있으면 true)
 	boolean checkReservationSeat(int[][] seat, int[] selectseat) {

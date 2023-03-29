@@ -2,9 +2,9 @@ package kr.or.kosa.homework;
 
 import java.util.Scanner;
 
-public class CinemaController {
+public class CinemaMenu {
 	
-	CinemaService cinemaService = new CinemaService();
+	CinemaUtils cinemaService = new CinemaUtils();
 	Scanner sc = new Scanner(System.in);
 
 	// 메인함수
@@ -22,8 +22,9 @@ public class CinemaController {
 			break;
 		case 3:	//예매 취소
 			cancleSeat(theater);
-			
-			
+		case 4:	//종료
+			System.out.println("종료되었습니다.");
+			System.exit(0);
 			break;
 		default:
 			System.out.println("정확한 값을 입력하세요");
@@ -38,6 +39,7 @@ public class CinemaController {
 		System.out.println("1. 예매");
 		System.out.println("2. 예매조회");
 		System.out.println("3. 예매취소");
+		System.out.println("4. 종료");
 		System.out.println("************");
 	}
 	
@@ -45,11 +47,10 @@ public class CinemaController {
 	void ticketingSeat(Cinema theater) {
 		int[][] seat = theater.getCinemaSeat();
 		try {
-			cinemaService.printSeat(seat);		//좌석 보여주기
-			
-			int[] selectseat = cinemaService.selectSeat(seat);	//좌석 선택하기
+			cinemaService.printSeat(seat);										//좌석 보여주기
+			int[] selectseat = cinemaService.selectSeat(seat);					//좌석 선택하기
 
-			if(cinemaService.checkReservationSeat(seat,selectseat)) {	//빈좌석일때만 예약
+			if(cinemaService.checkReservationSeat(seat,selectseat)) {			//빈좌석일때만 예약
 				int reservationNum = cinemaService.createReservationNum(seat);	//예매번호 생성
 				cinemaService.registerSeat(reservationNum,seat,selectseat);		//예매처리 함수
 			}else {
