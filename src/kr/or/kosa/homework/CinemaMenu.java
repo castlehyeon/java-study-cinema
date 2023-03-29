@@ -49,17 +49,21 @@ public class CinemaMenu {
 		try {
 			cinemaService.printSeat(seat);										//좌석 보여주기
 			int[] selectseat = cinemaService.selectSeat(seat);					//좌석 선택하기
-
-			if(cinemaService.checkReservationSeat(seat,selectseat)) {			//빈좌석일때만 예약
-				int reservationNum = cinemaService.createReservationNum(seat);	//예매번호 생성
-				cinemaService.registerSeat(reservationNum,seat,selectseat);		//예매처리 함수
-			}else {
-				System.out.println("이미 예약된 좌석입니다. 다시 선택해주세요");
-				ticketingSeat(theater);
+			
+			if(selectseat!=null) {
+				if(cinemaService.checkReservationSeat(seat,selectseat)) {			//빈좌석일때만 예약
+					int reservationNum = cinemaService.createReservationNum(seat);	//예매번호 생성
+					cinemaService.registerSeat(reservationNum,seat,selectseat);		//예매처리 함수
+				}else {
+					System.out.println("이미 예약된 좌석입니다. 다시 선택해주세요");
+					ticketingSeat(theater);
+				}
 			}
 
 		}catch (Exception e) {
 			System.out.println("예매중 오류가 발생하였습니다.");
+			System.out.println(e.getMessage());
+			
 		}finally {
 			this.main(theater);
 		}
@@ -71,9 +75,17 @@ public class CinemaMenu {
 		try {
 			System.out.println("조회하실 예매번호를 입력해주세요.");
 			int reservationNum = sc.nextInt();
-		
-			cinemaService.chkSeat(reservationNum,seat);
-			cinemaService.printSeat(reservationNum,seat);
+			reservationNum = cinemaService.checkReservationNum(reservationNum);
+			
+			if(reservationNum > 0) {
+				cinemaService.chkSeat(reservationNum,seat);
+				cinemaService.printSeat(reservationNum,seat);
+				
+			}else {
+				System.out.println("예약번호는 8자리 숫자형식입니다.");
+				checkSeat(theater);
+			}
+			
 		}catch (Exception e) {
 			System.out.println("예매조회중 오류가 발생하였습니다.");
 		}finally {

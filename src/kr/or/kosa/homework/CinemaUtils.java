@@ -1,6 +1,8 @@
 package kr.or.kosa.homework;
 
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CinemaUtils {
  
@@ -94,7 +96,7 @@ public class CinemaUtils {
 			}
 		}
 
-  		message = reservateYn ? "고객님이 예매하신 좌석은" + seatNum + "입니다":"고객님~ 예약번호 확인이 안되시네요~";
+  		message = reservateYn ? "고객님이 예매하신 좌석은" + seatNum + "입니다":"예매번호 확인이 안됩니다.예매내역을 다시 확인해주세요.";
   		System.out.println(message);
   	}
   	
@@ -105,11 +107,16 @@ public class CinemaUtils {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("좌석을 선택해 주세요.");
 		String inputStr = sc.next();
-		int i =Integer.parseInt(inputStr.split("-")[0])-1;	//행
-		int j =Integer.parseInt(inputStr.split("-")[1])-1;	//열
-		int[] rowCol = {i,j};
-
-		return rowCol;
+		
+		//정규식
+		if(!validSeatNumber(inputStr)) {
+			return null;
+		}else {
+			int i =Integer.parseInt(inputStr.split("-")[0])-1;	//행
+			int j =Integer.parseInt(inputStr.split("-")[1])-1;	//열
+			int[] rowCol = {i,j};
+			return rowCol;
+		}
 	}
 	
 	//예약번호 만들기 함수
@@ -136,5 +143,24 @@ public class CinemaUtils {
 		
 		return chkReservation;
 	}
-		
+
+	//예매번호 형식검사(8자리)
+	int checkReservationNum(int reservationNum) {
+		if(reservationNum < 10000000 || reservationNum > 99999999) {
+			reservationNum = -1;
+		}
+		return reservationNum;
+	}
+	
+	//좌석번호 정규식
+    boolean validSeatNumber(String seatNumber) {
+        Pattern pattern = Pattern.compile("\\d{1}-\\d{1}");//숫자-숫자
+        Matcher matcher = pattern.matcher(seatNumber);
+        if (matcher.matches()) {
+            return true;
+        } else {
+            System.out.println("유효하지 않은 좌석번호 입니다.");
+            return false;
+        }
+    }
 }
